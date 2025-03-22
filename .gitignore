@@ -1,0 +1,13 @@
+# Ambientes virtuais
+.env/
+**/.env/
+
+# Arquivos de dados (zip, csv, etc.)
+files/data/**
+
+
+# Caches do Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
