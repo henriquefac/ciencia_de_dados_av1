@@ -3,7 +3,7 @@
 **/.env/
 
 # Arquivos de dados (zip, csv, etc.)
-files/data/**
+files/data/*
 
 
 # Caches do Python
