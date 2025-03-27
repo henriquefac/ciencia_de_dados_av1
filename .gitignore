@@ -1,10 +1,5 @@
 # Ambientes virtuais
 .venv/
-.venv/
-**/.venv/
-.env/
-**/.env/
-
 # Arquivos de dados (zip, csv, etc.)
 files/data/*
 !files/data/armazenar_dados.txt
