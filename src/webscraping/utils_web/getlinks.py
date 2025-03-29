@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import os
 from config import *
 
 # aqui vai ser usado para colectar os links de download

@@ -5,7 +5,7 @@ import time
 import requests
 import zipfile
 from pathlib import Path
-import os
+
 
 
 URL_LIST = get_links_files()
