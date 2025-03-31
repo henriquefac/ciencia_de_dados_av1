@@ -21,6 +21,25 @@ class DirManager():
         """Retorna a representação do objeto no modo debug."""
         return f"DirManager({self.dir_path})"
     
+    def __getitem__(self, key: str) -> 'DirManager':
+        # Busca primeiro no nível atual
+        dirs = self.list_dir()
+        files = self.list_file()
+
+        if key in dirs:
+            return dirs[key]
+        if key in files:
+            return files[key]
+
+        for sub_dir in dirs.values():
+            try:
+                return sub_dir[key]
+            except KeyError:
+                continue
+        
+        raise KeyError(f"'{key}' não encontrado em {self.dir_path} e subdiretórios.")
+
+    
 class Config:
     BASE_PATH = Path(__file__).resolve().parent
     FILE_DIR_PATH = BASE_PATH / "files"
@@ -28,18 +47,18 @@ class Config:
     LINKS_DIR = FILE_DIR_PATH / "links"
 
     @classmethod
-    def get_path_links(cls) -> dict[str, Path]:
-        return {file.stem: file for file in cls.LINKS_DIR.iterdir() if file.is_file()}
+    def get_path_links(cls) -> DirManager:
+        return DirManager(cls.LINKS_DIR)
     
     @classmethod
-    def get_path_dir_data(cls) -> dict[str, DirManager]:
-        return {dir.name : DirManager(dir)  for dir in cls.DATA_PATH.iterdir() if dir.is_dir()}
+    def get_path_dir_data(cls) -> DirManager:
+        return DirManager(cls.DATA_PATH)
 
 
 if __name__ == "__main__":
     # Obtendo os diretórios dentro de DATA_PATH
     data_dirs = Config.get_path_dir_data()
-    data_extract = data_dirs["microdados_enem_2023"]
+    data_extract = data_dirs["microdados_enem_2023"]["microdados_enem_2023_extract"]
 
-    print(data_extract.list_dir()["microdados_enem_2023_extract"])
+    print(data_extract.list_dir())
 
