@@ -11,7 +11,7 @@ class DirManager():
         return {dir.name : DirManager(dir)  for dir in self.dir_path.iterdir() if dir.is_dir()}
     
     def list_file(self)->dict[str, Path]:
-        return {file.stem: file for file in self.dir_path.iterdir() if file.is_file()}
+        return {file.name: file for file in self.dir_path.iterdir() if file.is_file()}
 
     def __str__(self) -> str:
         """Retorna o caminho como string ao chamar print(obj)."""

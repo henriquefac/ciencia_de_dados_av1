@@ -1,7 +1,7 @@
 from config import Config
 import pandas as pd
 from pathlib import Path
-
+from utils import Dicionario
 # recebe camiho para um arquivo xlsx e transforma num csv
 # funções para isso
 # função específica para DICIONÁRIO
@@ -36,5 +36,8 @@ def dict_xlsx_csv(path_xlsx: Path):
 
 if __name__ == "__main__":
     data_dirs = Config.get_path_dir_data()
-    path_xlsx = data_dirs["microdados_enem_2023_extract"]["Dicionário_Microdados_Enem_2023"]
+    path_xlsx = data_dirs["microdados_enem_2023_extract"]["Dicionário_Microdados_Enem_2023.xlsx"]
     dict_xlsx_csv(path_xlsx)
+    path_csv = data_dirs["microdados_enem_2023_extract"]["MICRODADOS_ENEM_2023.csv"]
+    dict_ = Dicionario(path_csv)
+    print(dict_.tabel)
