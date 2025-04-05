@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import csv
 
-class Dicionario():
+class DataDict():
 
     CABECALHO = ["Nome da variavel", "Descricao", "Variavel Categorica", "Tamanho", "Tipo"]
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     data_dict = Config.get_path_dir_data()
     csv_dict = data_dict["DICIONÁRIO"]["MICRODADOS_ENEM_2023"]
     print(csv_dict)   
-    dicionario = Dicionario(csv_dict)
+    dicionario = DataDict(csv_dict)
     for key , value in dicionario.legenda.items():
         print(key)
         print(value)

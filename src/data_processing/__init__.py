@@ -1,2 +1,2 @@
-from .utils import Dicionario
-__all__ = ["Dicionario"]
+from .utils import DataDict, ItemDict
+__all__ = ["DataDict", "ItemDict"]
