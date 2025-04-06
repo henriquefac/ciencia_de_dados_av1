@@ -25,6 +25,10 @@ def csv_to_parquet(path_csv: Path, chunk_size=500_000):
     # Ler CSV em chunks e salvar cada um como Parquet
     for i, chunk in enumerate(pd.read_csv(path_csv, chunksize=chunk_size, low_memory=False, encoding="latin1", sep=";")):
         parquet_path = file_path_parquet(dir_path, i)
+        if parquet_path.exists():
+            print(f"{parquet_path.name} já existe!")
+            part_path.append(parquet_path)
+            continue
         chunk.to_parquet(parquet_path, engine="pyarrow", index=False)
         part_path.append(parquet_path)
         print(f"Parte {i} salva em {parquet_path}")
@@ -54,8 +58,7 @@ if __name__ == "__main__":
     data_dirs = Config.get_path_dir_data()
     path_csv = data_dirs["DADOS"]["MICRODADOS_ENEM_2023.csv"]
     
-    part_paths = list(data_dirs["DADOS"]["MICRODADOS_ENEM_2023_parquet"].list_file().values())
-    
+    part_paths = csv_to_parquet(path_csv)
     final_parquet_path = path_csv.with_suffix(".parquet")
     
     merge_parquet_files(part_paths, final_parquet_path)

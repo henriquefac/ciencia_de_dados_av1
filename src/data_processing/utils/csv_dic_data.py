@@ -15,7 +15,7 @@ class DataDict():
         self.legenda = self.get_categorys()
         
     def getCleanCSV(self):
-        with open(self.path_csv, mode="r", encoding="latin1") as file:
+        with open(self.path_csv, mode="r", encoding="utf-8") as file:
             csvFile = csv.reader(file)
 
             # Pular as 5 primeiras linhas
