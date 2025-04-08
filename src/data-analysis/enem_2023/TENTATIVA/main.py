@@ -143,3 +143,76 @@ def eighth_question():
 
 # ERRADASSA
 # eighth_question()
+
+
+def free_first_question():
+    df_filtered = df[['TP_DEPENDENCIA_ADM_ESC', 'Q006', 'NU_NOTA_MT', 'NU_NOTA_LC',
+             'NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_REDACAO']]
+
+    df_filtered['TIPO_ESCOLA'] = df_filtered['TP_DEPENDENCIA_ADM_ESC'].apply(
+        lambda x: 'Privada' if x == 4 else ('Pública' if x in [1, 2, 3] else 'Sem info'))
+
+    alta_renda = list("PQRSTUVWXYZ")
+    baixa_renda = list("ABCD")
+    df_filtered['CLASSE_RENDA'] = df_filtered['Q006'].apply(
+        lambda x: 'Alta' if x in alta_renda else ('Baixa' if x in baixa_renda else 'Média'))
+
+    # Ignorando notas 0 (leia-se: ausentes)
+    col_notas = ['NU_NOTA_MT', 'NU_NOTA_LC', 'NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_REDACAO']
+    for col in col_notas:
+        df_filtered = df_filtered[df_filtered[col] > 0]
+
+    df_filtered['NOTA_MEDIA'] = df_filtered[col_notas].mean(axis=1)
+
+    # Filtrar os dois grupos da análise
+    grupo_publica_alta = df_filtered[(df_filtered['TIPO_ESCOLA'] == 'Pública') & (df_filtered['CLASSE_RENDA'] == 'Alta')]
+    grupo_privada_baixa = df_filtered[(df_filtered['TIPO_ESCOLA'] == 'Privada') & (df_filtered['CLASSE_RENDA'] == 'Baixa')]
+
+    # Qntd de alunos
+    qtd_pub_alta = len(grupo_publica_alta)
+    qtd_priv_baixa = len(grupo_privada_baixa)
+
+
+    #Análise unicamente pela renda
+    grupo_alta_renda = df_filtered[df_filtered['CLASSE_RENDA'] == 'Alta']['NOTA_MEDIA']
+    grupo_baixa_renda = df_filtered[df_filtered['CLASSE_RENDA'] == 'Baixa']['NOTA_MEDIA']
+
+    plt.figure(figsize=(8,6))
+    plt.boxplot([grupo_alta_renda, grupo_baixa_renda],
+                labels=['Alta Renda', 'Baixa Renda'],
+                patch_artist=True,
+                boxprops=dict(facecolor='green'),
+                medianprops=dict(color='black'))
+    plt.title('Comparação de Notas por Renda')
+    plt.ylabel('Nota Média')
+    plt.grid(True)
+    plt.show()
+
+    #Análise pelo tipo de escola (pública ou privada)
+    grupo_publica = df_filtered[df_filtered['TIPO_ESCOLA'] == 'Pública']['NOTA_MEDIA']
+    grupo_privada = df_filtered[df_filtered['TIPO_ESCOLA'] == 'Privada']['NOTA_MEDIA']
+
+    plt.figure(figsize=(8,6))
+    plt.boxplot([grupo_publica, grupo_privada],
+                labels=['Escola Pública', 'Escola Privada'],
+                patch_artist=True,
+                boxprops=dict(facecolor='lightblue'),
+                medianprops=dict(color='black'))
+    plt.title('Comparação de Notas por Tipo de Escola')
+    plt.ylabel('Nota Média')
+    plt.grid(True)
+    plt.show()
+
+    # Gráfico agrupando Baixa renda e escola privada x Alta renda e escola pública
+    plt.figure(figsize=(10,6))
+    plt.boxplot([grupo_publica_alta['NOTA_MEDIA'], grupo_privada_baixa['NOTA_MEDIA']],
+                labels=['Pública + Alta Renda', 'Privada + Baixa Renda'],
+                patch_artist=True,
+                boxprops=dict(facecolor='lightblue'),
+                medianprops=dict(color='red'))
+    plt.title('Comparação de Notas Médias - ENEM')
+    plt.ylabel('Nota Média Geral')
+    plt.grid(True)
+    plt.show()
+
+free_first_question()
