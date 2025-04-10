@@ -276,4 +276,46 @@ def analise_tempo_conclusao():
     plt.tight_layout()
     plt.show()
 
-analise_tempo_conclusao()
+def analise_rural_urbano():
+    dependencia_dict = {
+        1: 'Federal',
+        2: 'Estadual',
+        3: 'Municipal',
+        4: 'Privada'
+    }
+
+    localizacao_dict = {
+        1: 'Urbana',
+        2: 'Rural'
+    }
+
+    df['TP_DEPENDENCIA_ADM_ESC'] = df['TP_DEPENDENCIA_ADM_ESC'].map(dependencia_dict)
+    df['TP_LOCALIZACAO_ESC'] = df['TP_LOCALIZACAO_ESC'].map(localizacao_dict)
+
+    contagem = pd.crosstab(df['TP_LOCALIZACAO_ESC'], df['TP_DEPENDENCIA_ADM_ESC'])
+
+    percentual = contagem.div(contagem.sum(axis=1), axis=0) * 100
+
+    percentual.plot(kind='bar', stacked=True, figsize=(10, 6), colormap='tab20c')
+    plt.title('Distribuição percentual do tipo de escola por localização')
+    plt.xlabel('Localização da escola')
+    plt.ylabel('Percentual (%)')
+    plt.legend(title='Tipo de escola', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.grid(axis='y')
+
+    df_filtrado = df[df['NU_NOTA_MT'].notnull()]
+
+    media_por_local = df_filtrado.groupby('TP_LOCALIZACAO_ESC')['NU_NOTA_MT'].mean().sort_values()
+
+    plt.figure(figsize=(6, 4))
+    media_por_local.plot(kind='bar', color='skyblue')
+    plt.title('Nota média de Matemática por localização da escola')
+    plt.xlabel('Localização da escola')
+    plt.ylabel('Nota média')
+    plt.grid(axis='y')
+    plt.tight_layout()
+
+    plt.show()
+
+analise_rural_urbano()
