@@ -216,3 +216,64 @@ def free_first_question():
     plt.show()
 
 free_first_question()
+
+
+def analise_tempo_conclusao():
+    mapa_conclusao = {
+        1: 'Concluiu EM',
+        2: 'Conclui em 2023',
+        3: 'Conclui após 2023',
+        4: 'Não cursa'
+    }
+
+    mapa_renda = {
+        'A': 'Nenhuma renda',
+        'B': 'Até R$ 1.320',
+        'C': 'R$ 1.320 - R$ 1.980',
+        'D': 'R$ 1.980 - R$ 2.640',
+        'E': 'R$ 2.640 - R$ 3.300',
+        'F': 'R$ 3.300 - R$ 3.960',
+        'G': 'R$ 3.960 - R$ 5.280',
+        'H': 'R$ 5.280 - R$ 6.600',
+        'I': 'R$ 6.600 - R$ 7.920',
+        'J': 'R$ 7.920 - R$ 9.240',
+        'K': 'R$ 9.240 - R$ 10.560',
+        'L': 'R$ 10.560 - R$ 11.880',
+        'M': 'R$ 11.880 - R$ 13.200',
+        'N': 'R$ 13.200 - R$ 15.840',
+        'O': 'R$ 15.840 - R$ 19.800',
+        'P': 'R$ 19.800 - R$ 26.400',
+        'Q': 'Acima de R$ 26.400',
+    }
+
+    df_validos = df[
+        df['NU_NOTA_MT'].notnull() &
+        df['TP_ST_CONCLUSAO'].notnull() &
+        df['Q006'].notnull()
+    ].copy()
+
+    df_validos['SITUACAO_EM'] = df_validos['TP_ST_CONCLUSAO'].map(mapa_conclusao)
+    df_validos['FAIXA_RENDA'] = df_validos['Q006'].map(mapa_renda)
+
+    df_grouped = df_validos.groupby(['FAIXA_RENDA', 'SITUACAO_EM'])['NU_NOTA_MT'].mean().unstack()
+
+    ordem_renda = list(mapa_renda.values())
+    df_grouped = df_grouped.reindex(ordem_renda)
+
+    plt.figure(figsize=(16, 8))
+    width = 0.2
+    x = np.arange(len(df_grouped.index))
+
+    for i, coluna in enumerate(df_grouped.columns):
+        plt.bar(x + i * width, df_grouped[coluna], width=width, label=coluna)
+
+    plt.xticks(x + width * 1.5, df_grouped.index, rotation=45, ha='right')
+    plt.xlabel('Faixa de Renda Familiar')
+    plt.ylabel('Nota média em Matemática')
+    plt.title('Nota Média de Matemática por Faixa de Renda e Situação no Ensino Médio')
+    plt.legend(title='Situação no EM')
+    plt.grid(axis='y', linestyle='--', alpha=0.5)
+    plt.tight_layout()
+    plt.show()
+
+analise_tempo_conclusao()
