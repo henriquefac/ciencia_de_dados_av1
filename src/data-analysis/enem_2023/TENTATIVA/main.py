@@ -1,12 +1,11 @@
 import pandas as pd
 from pathlib import Path
 import matplotlib.pyplot as plt
-from scipy.stats import ttest_ind
+#from scipy.stats import ttest_ind
+from config import Config
 
-
-data_path = Path(
-    r"D:\Programacao\Python\ciencia_de_dados_av1\files\data\microdados_enem_2023\microdados_enem_2023_extract\DADOS\MICRODADOS_ENEM_2023.csv")
-df = pd.read_csv(data_path, sep=";", encoding="latin1", low_memory=False)
+data_path = Config.get_path_dir_data()["MICRODADOS_ENEM_2023.parquet"]
+df = pd.read_parquet(data_path)
 
 # Removendo valores nulos
 notas_mt = df['NU_NOTA_MT'].dropna()
