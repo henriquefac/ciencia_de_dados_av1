@@ -8,7 +8,7 @@ LINK_DIR = Config.get_path_links()
 
 # primeiro, é preciso pegar o link da página principal
 def get_links_web():
-    LINK_PAGE_PATH = LINK_DIR["page"]
+    LINK_PAGE_PATH = LINK_DIR["page.txt"]
 
     link = open(LINK_PAGE_PATH, "r").readline().strip()
 
@@ -24,7 +24,7 @@ def get_links_web():
     return list_links
 
 def get_links_files():
-    LINK_DOWNLOAD_PATH = LINK_DIR["links-download"]
+    LINK_DOWNLOAD_PATH = LINK_DIR["links-download.txt"]
     
     with open(LINK_DOWNLOAD_PATH, "r", encoding="utf-8") as file:
         links = [linha.strip() for linha in file if linha.strip()]
@@ -33,7 +33,7 @@ def get_links_files():
 
 def download_from_links(list_links):
     # Caminho para salvar os links coletados
-    LINK_DOWNLOAD_PATH = LINK_DIR["links-download"]
+    LINK_DOWNLOAD_PATH = LINK_DIR["links-download.txt"]
 
     if not LINK_DOWNLOAD_PATH:
         raise FileNotFoundError("Arquivo 'links-download.txt' não encontrado em links-download/")

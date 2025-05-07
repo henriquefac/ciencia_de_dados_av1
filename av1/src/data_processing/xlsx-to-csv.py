@@ -38,6 +38,6 @@ if __name__ == "__main__":
     data_dirs = Config.get_path_dir_data()
     path_xlsx = data_dirs["microdados_enem_2023_extract"]["Dicionário_Microdados_Enem_2023.xlsx"]
     dict_xlsx_csv(path_xlsx)
-    path_csv = data_dirs["microdados_enem_2023_extract"]["MICRODADOS_ENEM_2023.csv"]
+    path_csv = data_dirs["microdados_enem_2023_extract"]["DICIONÁRIO"]["MICRODADOS_ENEM_2023.csv"]
     dict_ = DataDict(path_csv)
     print(dict_.tabel)

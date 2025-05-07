@@ -56,8 +56,7 @@ def merge_parquet_files(part_paths, output_path):
     print(f"Arquivo Parquet final salvo em: {output_path}")
 if __name__ == "__main__":
     data_dirs = Config.get_path_dir_data()
-    path_csv = data_dirs["DADOS"]["ITENS_PROVA_2023.csv"]
-    
+    path_csv = data_dirs["DADOS"]["MICRODADOS_ENEM_2023.csv"]
     part_paths = csv_to_parquet(path_csv)
     final_parquet_path = path_csv.with_suffix(".parquet")
     
