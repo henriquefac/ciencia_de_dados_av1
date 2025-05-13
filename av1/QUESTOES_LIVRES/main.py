@@ -78,7 +78,8 @@ def first_question():
     axes_bar_box[0].grid(axis='y', linestyle='--')
     axes_bar_box[0].tick_params(axis='x', rotation=0)
 
-    df_escola_local_filtrado.boxplot(column='NU_NOTA_MT', by=['TP_LOCALIZACAO_ESC_DESC', 'TP_DEPENDENCIA_ADM_ESC_DESC'], ax=axes_bar_box[1], figsize=(10,6), grid=False, rot=20)
+    df_escola_local_filtrado.boxplot(column='NU_NOTA_MT', by=['TP_LOCALIZACAO_ESC_DESC', 'TP_DEPENDENCIA_ADM_ESC_DESC'], 
+        ax=axes_bar_box[1], figsize=(10,6), grid=False, rot=20)
     axes_bar_box[1].set_title('Distribuição das Notas de Matemática por Localização e Tipo de Escola')
     axes_bar_box[1].set_xlabel('Localização e Tipo de Escola')
     axes_bar_box[1].set_ylabel('Nota de Matemática')
