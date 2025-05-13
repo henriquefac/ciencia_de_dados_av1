@@ -154,3 +154,54 @@ def second_question():
     plt.show()
 
 second_question()
+
+def third_question():
+    df_q3 = df[['NU_NOTA_MT', 'TP_ESTADO_CIVIL', 'TP_FAIXA_ETARIA']].dropna()
+    df_q3 = df_q3[df_q3['NU_NOTA_MT'] > 0]
+
+    estado_civil_map = {
+        1: 'Solteiro(a)',
+        2: 'Casado(a)/Companheiro(a)'
+    }
+    faixa_etaria_map = {
+        'Até 25 anos': range(1, 11),
+        '26 a 40 anos': range(11, 14),
+        'Mais de 40 anos': range(14, 21)
+    }
+
+    df_q3 = df_q3[df_q3['TP_ESTADO_CIVIL'].isin(estado_civil_map.keys())]
+
+    df_q3['Estado Civil'] = df_q3['TP_ESTADO_CIVIL'].map(estado_civil_map)
+
+    def classificar_faixa(cod):
+        for faixa, codigos in faixa_etaria_map.items():
+            if cod in codigos:
+                return faixa
+    df_q3['Faixa Etária'] = df_q3['TP_FAIXA_ETARIA'].apply(classificar_faixa)
+
+    palette = {
+        'Solteiro(a)': '#1f77b4',
+        'Casado(a)/Companheiro(a)': '#ff7f0e'
+    }
+
+    fig, axs = plt.subplots(2, 3, figsize=(18, 10), sharey=True)
+    axs = axs.flatten()
+
+    i = 0
+    for estado, cor in palette.items():
+        for faixa in faixa_etaria_map.keys():
+            ax = axs[i]
+            subset = df_q3[(df_q3['Estado Civil'] == estado) & (df_q3['Faixa Etária'] == faixa)]
+
+            ax.hist(subset['NU_NOTA_MT'], bins=40, color=cor, edgecolor='black', log=True)
+            
+            ax.set_title(f'{estado} - {faixa}', fontsize=14)
+            ax.set_xlabel('Nota de Matemática', fontsize=12)
+            ax.set_ylabel('Frequência (escala log)', fontsize=12)
+            i += 1
+
+    plt.suptitle('Distribuição das Notas de Matemática por Estado Civil e Faixa Etária', fontsize=18, y=1.02)
+    plt.tight_layout()
+    plt.show()
+    
+third_question()
