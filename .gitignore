@@ -1,9 +1,8 @@
 # Ambientes virtuais
-.venv/
-
+**/.venv/**
 # Arquivos de dados (zip, csv, etc.)
-files/data/*
-!files/data/armazenar_dados.txt
+**/files/data/*
+!**/files/data/armazenar_dados.txt
 
 # Caches do Python
 __pycache__/
