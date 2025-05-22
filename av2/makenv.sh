@@ -5,9 +5,11 @@ echo "Iniciando projeto"
 # Verifica se o ambiente virtual existe
 if [ ! -d ".venv" ]; then
     echo "Criando ambiente virtual"
-    python3 -m venv .venv
+    py -3 -m venv .venv # MODIFICADO AQUI
 
     # Define as variáveis de ambiente para o ambiente virtual
+    # Nota: A forma como você está adicionando ao activate pode não ser ideal
+    # para todas as shells, mas vamos manter por enquanto.
     echo "export PYTHONPATH=$(pwd)" >> .venv/bin/activate
     echo "export JUPYTER_PATH=$(pwd)" >> .venv/bin/activate
 
@@ -15,16 +17,16 @@ if [ ! -d ".venv" ]; then
     source .venv/bin/activate
     
     # Atualiza o pip e instala dependências
-    python3 -m pip install --upgrade pip
+    py -3 -m pip install --upgrade pip # MODIFICADO AQUI
 
     # Verifica se requirements.txt existe antes de instalar
     if [ -f "requirements.txt" ]; then
-        pip install -r requirements.txt
+        py -3 -m pip install -r requirements.txt # MODIFICADO AQUI
     else
         echo "Aviso: requirements.txt não encontrado. Nenhum pacote foi instalado."
     fi
 
-    # criar kernel
+    # criar kernel (Esta linha parece incompleta, mas o deactivate está correto)
     deactivate
 fi
 
@@ -32,11 +34,14 @@ fi
 source .venv/bin/activate
 
 # Verifica se 'requests' está instalado corretamente
-if ! python -c "import requests" &> /dev/null; then
+# Usaremos 'py -3' para consistência, embora 'py' provavelmente funcione
+if ! py -3 -c "import requests" &> /dev/null; then # MODIFICADO AQUI
     echo "Erro: requests não encontrado. Instalando..."
-    pip install requests
+    py -3 -m pip install requests # MODIFICADO AQUI
 fi
 
 # Executa os scripts
-python src/webscraping/utils_web/getlinks.py
-python src/webscraping/utils_web/download_files.py
+py -3 src/webscraping/utils_web/getlinks.py # MODIFICADO AQUI
+py -3 src/webscraping/utils_web/download_files.py # MODIFICADO AQUI
+
+echo "Script finalizado." # Adicionado para feedback
