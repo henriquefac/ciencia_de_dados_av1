@@ -42,16 +42,11 @@ class DirManager():
     
 class Config:
     BASE_PATH = Path(__file__).resolve().parent
-    FILE_DIR_PATH = BASE_PATH / "files"
-    DATA_PATH = FILE_DIR_PATH / "data"
-    LINKS_DIR = FILE_DIR_PATH / "links"
-
-    @classmethod
-    def get_path_links(cls) -> DirManager:
-        return DirManager(cls.LINKS_DIR)
+    FILE_DIR_PATH = BASE_PATH / "datasets"
+    DATA_PATH = FILE_DIR_PATH / "datasets-originais"
     
     @classmethod
-    def get_path_dir_data(cls) -> DirManager:
+    def get_path_dir_dataset(cls) -> DirManager:
         return DirManager(cls.DATA_PATH)
 
 
